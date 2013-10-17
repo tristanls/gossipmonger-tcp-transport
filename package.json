@@ -1,6 +1,6 @@
 {
   "name": "gossipmonger-tcp-transport",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "TCP Transport for Gossipmonger",
   "scripts": {
     "test": "node scripts/test.js"
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:tristanls/node-gossipmonger-tcp-transport.git"
+    "url": "git@github.com:tristanls/gossipmonger-tcp-transport.git"
   },
   "keywords": [
     "gossip",
