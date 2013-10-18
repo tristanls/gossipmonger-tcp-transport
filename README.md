@@ -43,6 +43,7 @@ TCP Transport for [Gossipmonger](https://github.com/tristanls/node-gossipmonger)
   * [tcpTransport.listen(\[callback\])](#tcptransportlistecallback)
   * [Event 'deltas'](#event-deltas)
   * [Event 'digest'](#event-digest)
+  * [Event 'error'](#event-error)
 
 ### TcpTransport.listen(options, [callback])
 
@@ -133,3 +134,10 @@ Emitted when TcpTransport receives `deltas` from a peer.
     * `digest`: _Any_ Received digest.
 
 Emitted when TcpTransport receives `digest` from a peer.
+
+### Event `error`
+
+  * `function (error) {}`
+    * `error`: _Object_ An error that occurred.
+
+Emitted when TcpTransport encounters an error. If no handler is registered, an exception will be thrown.
