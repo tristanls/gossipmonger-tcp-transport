@@ -169,4 +169,9 @@ TcpTransport.prototype.rpc = function rpc (remotePeer, payload) {
                 payload = JSON.stringify(payload);
             client.end(payload + '\r\n');
         });
+    
+    // propagate client errors
+    client.on('error', function (error) {
+        self.emit('error', error);
+    });
 };
