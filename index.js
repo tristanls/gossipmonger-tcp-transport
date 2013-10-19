@@ -159,6 +159,12 @@ TcpTransport.prototype.listen = function listen (callback) {
 */ 
 TcpTransport.prototype.rpc = function rpc (remotePeer, payload) {
     var self = this;
+    if (!remotePeer || !remotePeer.transport || !remotePeer.transport.host
+        || !remotePeer.transport.port) {
+
+        return self.emit('error', new Error("malformed remotePeer"));
+    }
+
     var client = net.connect(
         {
             host: remotePeer.transport.host,
@@ -169,7 +175,7 @@ TcpTransport.prototype.rpc = function rpc (remotePeer, payload) {
                 payload = JSON.stringify(payload);
             client.end(payload + '\r\n');
         });
-    
+
     // propagate client errors
     client.on('error', function (error) {
         self.emit('error', error);

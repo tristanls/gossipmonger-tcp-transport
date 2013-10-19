@@ -46,3 +46,14 @@ test['rpc() captures client error and propagates it to a transport event'] = fun
     });
     tcpTransport.rpc(remotePeer, "payload");    
 };
+
+test["rpc() emits transport error if remotePeer is malformed"] = function (test) {
+    test.expect(1);
+    var tcpTransport = new TcpTransport();
+    var remotePeer = {id: "remote"};
+    tcpTransport.on('error', function (error) {
+        test.equal(error.message, "malformed remotePeer"); // client connection error caught
+        test.done();
+    });
+    tcpTransport.rpc(remotePeer, "payload");    
+};
