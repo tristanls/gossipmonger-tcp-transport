@@ -19,6 +19,11 @@ transport.on('deltas', function (remotePeer, deltas) {
 transport.on('digest', function (remotePeer, digest) {
     // process digest
 });
+
+transport.on('error', function (error) {
+    // process the error
+    // if error handler is not registered if an error occurs it will be thrown
+});
 ```
 
 ## Tests
