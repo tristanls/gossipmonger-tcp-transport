@@ -48,10 +48,3 @@ test['new GossipmongerTcpTransport() configures port from options'] = function (
     test.equal(tcpTransport.port, 1337);
     test.done();
 };
-
-test['new GossipmongerTcpTransport() configures useAdvertisedTransport from options'] = function (test) {
-    test.expect(1);
-    var tcpTransport = new GossipmongerTcpTransport({useAdvertisedTransport: true});
-    test.strictEqual(tcpTransport.useAdvertisedTransport, true);
-    test.done();
-};

@@ -100,33 +100,6 @@ test['listening transport emits `deltas` event when it receives deltas'] = funct
     });
 };
 
-test['listening transport uses advertised remote peer data if '
-    + 'useAdvertisedTransport option is specified when emitting `deltas`'] = function (test) {
-    test.expect(2);
-    var localPeer = {id: "local", transport: {host: 'localhost', port: 9742}};
-    var remotePeer = {id: "remote", transport: {host: '127.0.0.1', port: 11111}};
-    var tcpTransport = new TcpTransport({useAdvertisedTransport: true});
-    tcpTransport.listen(function () {
-        var client = net.connect({host: 'localhost', port: 9742}, function () {
-            var rpc = {
-                deltas: [["remote", "foo", "bar", 3]],
-                sender: remotePeer
-            };
-            client.end(JSON.stringify(rpc) + '\r\n'); // deltas rpc
-        });
-        client.on('error', function (error) {
-            // catch test connection cut
-        });
-    });
-    tcpTransport.on('deltas', function (rPeer, deltas) {
-        test.deepEqual(rPeer, remotePeer);
-        test.deepEqual(deltas, [["remote", "foo", "bar", 3]]);
-        tcpTransport.close(function () {
-            test.done();
-        });
-    });
-};
-
 test['listening transport emits `digest` event when it receives digest'] = function (test) {
     test.expect(2);
     var localPeer = {id: "local", transport: {host: 'localhost', port: 9742}};
@@ -156,38 +129,6 @@ test['listening transport emits `digest` event when it receives digest'] = funct
     tcpTransport.on('digest', function (rPeer, digest) {
         remotePeer.transport.host = clientLocalAddress;
         remotePeer.transport.port = clientLocalPort;
-        test.deepEqual(rPeer, remotePeer);
-        test.deepEqual(digest, [digestPeer]);
-        tcpTransport.close(function () {
-            test.done();
-        });
-    });
-};
-
-test['listening transport uses advertised remote peer data if '
-    + 'useAdvertisedTransport option is specified when emitting `digest`'] = function (test) {
-    test.expect(2);
-    var localPeer = {id: "local", transport: {host: 'localhost', port: 9742}};
-    var remotePeer = {id: "remote", transport: {host: '127.0.0.1', port: 11111}};
-    var digestPeer = {
-        id: "digest", 
-        maxVersionSeen: 17, 
-        transport: {host: '127.0.0.1', port: 12222}
-    };
-    var tcpTransport = new TcpTransport({useAdvertisedTransport: true});
-    tcpTransport.listen(function () {
-        var client = net.connect({host: 'localhost', port: 9742}, function () {
-            var rpc = {
-                digest: [digestPeer],
-                sender: remotePeer
-            };         
-            client.end(JSON.stringify(rpc) + '\r\n'); // digest rpc
-        });
-        client.on('error', function (error) {
-            // catch test connection cut
-        });
-    });
-    tcpTransport.on('digest', function (rPeer, digest) {
         test.deepEqual(rPeer, remotePeer);
         test.deepEqual(digest, [digestPeer]);
         tcpTransport.close(function () {
