@@ -149,6 +149,9 @@ TcpTransport.prototype.listen = function listen (callback) {
             self.emit('error', error);
         });
     });
+    self.server.on('error', function (error) {
+        self.emit('error', error);
+    });
     self.server.listen(self.port, self.host, callback);
 };
 
