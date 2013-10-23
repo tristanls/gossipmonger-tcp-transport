@@ -52,11 +52,27 @@ test['listen() starts a TCP server on localhost:9742 by default'] = function (te
     });
 };
 
-test['listen() starts a TCP server on host:port from options'] = function (test) {
+test['listen() starts a TCP server on host:port from constructor options'] = function (test) {
     test.expect(1);
     var tcpTransport = new TcpTransport({host: '127.0.0.1', port: 6744});
     tcpTransport.listen(function () {
         var client = net.connect({host: '127.0.0.1', port: 6744}, function () {
+            test.ok(true); // assert connection
+            tcpTransport.close(function () {
+                test.done();
+            });
+        });
+        client.on('error', function () {
+            // catch test connection cut
+        });
+    });
+};
+
+test['listen() starts a TCP server on host:port from listen call options if specified'] = function (test) {
+    test.expect(1);
+    var tcpTransport = new TcpTransport({host: '127.0.0.1', port: 6744});
+    tcpTransport.listen({host: 'localhost', port: 9999}, function () {
+        var client = net.connect({host: '127.0.0.1', port: 9999}, function () {
             test.ok(true); // assert connection
             tcpTransport.close(function () {
                 test.done();

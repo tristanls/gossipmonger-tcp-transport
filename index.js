@@ -56,7 +56,8 @@ util.inherits(TcpTransport, events.EventEmitter);
 /*
   * `options`: See `new TcpTransport(options)` `options`.
   * `callback`: See `tcpTransport.listen(callback)` `callback`.
-  Return: _Object_ An instance of TcpTransport with server running.
+  Return: _Object_ An instance of TcpTransport with server listening on host
+          and port as specified in options or defaults.
 */
 TcpTransport.listen = function listen (options, callback) {
     var tcpTransport = new TcpTransport(options);
@@ -123,11 +124,23 @@ TcpTransport.prototype.digest = function digest (remotePeer, localPeer, digestTo
 };
 
 /*
+  * `options`: _Object_
+    * `host`: _String_ _(Default: as specified on construction)_ Hostname or IP
+            to listen on.
+    * `port`: _Integer_ _(Default: as specified on construction)_ Port number
+            to listen on.
   * `callback`: _Function_ _(Default: undefined)_ Optional callback to call once
       the server is up.
 */
-TcpTransport.prototype.listen = function listen (callback) {
+TcpTransport.prototype.listen = function listen (options, callback) {
     var self = this;
+
+    // options are optional
+    if (typeof options === 'function') {
+        callback = options;
+        options = {};
+    }
+
     self.server = net.createServer(function (connection) {
         var data = "";
         connection.on('data', function (chunk) {
@@ -152,7 +165,12 @@ TcpTransport.prototype.listen = function listen (callback) {
     self.server.on('error', function (error) {
         self.emit('error', error);
     });
-    self.server.listen(self.port, self.host, callback);
+
+    // allow for options to override host and port we are listening on if it
+    // is different from one visible to the outside world
+    var listenHost = options.host || self.host;
+    var listenPort = options.port || self.port;
+    self.server.listen(listenPort, listenHost, callback);
 };
 
 /*

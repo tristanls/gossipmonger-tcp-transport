@@ -45,7 +45,7 @@ TCP Transport for [Gossipmonger](https://github.com/tristanls/node-gossipmonger)
   * [tcpTransport.close(\[callback\])](#tcptransportclosecallback)
   * [tcpTransport.deltas(remotePeer, localPeer, deltasToSend)](#tcptransportdeltasremotepeer-localpeer-deltastosend)
   * [tcpTransport.digest(remotePeer, localPeer, digestToSend)](#tcptransportdigestremotepeer-localpeer-digesttosend)
-  * [tcpTransport.listen(\[callback\])](#tcptransportlistecallback)
+  * [tcpTransport.listen(\[options\],\[callback\])](#tcptransportlistenoptions-callback)
   * [Event 'deltas'](#event-deltas)
   * [Event 'digest'](#event-digest)
   * [Event 'error'](#event-error)
@@ -54,7 +54,7 @@ TCP Transport for [Gossipmonger](https://github.com/tristanls/node-gossipmonger)
 
   * `options`: See `new TcpTransport(options)` `options`.
   * `callback`: See `tcpTransport.listen(callback)` `callback`.
-  * Return: _Object_ An instance of TcpTransport with server running.
+  * Return: _Object_ An instance of TcpTransport with server listening on host and port as specified in options or defaults.
 
 Creates new TCP transport and starts the server.
 
@@ -102,8 +102,11 @@ Sends `deltasToSend` to the `remotePeer`.
 
 Sends `digestToSend` to the `remotePeer`.
 
-### tcpTransport.listen([callback])
+### tcpTransport.listen([options], [callback])
 
+  * `options`: _Object_
+    * `host`: _String_ _(Default: as specified on construction)_ Hostname or IP to listen on.
+    * `port`: _Integer_ _(Default: as specified on construction)_ Port number to listen on.
   * `callback`: _Function_ _(Default: undefined)_ `function () {}` Optional callback to call once the server is up.
 
 Starts the server to listen to requests from other peers.
