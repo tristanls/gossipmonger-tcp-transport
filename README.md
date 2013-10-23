@@ -62,11 +62,13 @@ Creates new TCP transport and starts the server.
 
 ### new TcpTransport(options)
 
-  * `options`:
+  * `options`: _Object_
     * `host`: _String_ _(Default: 'localhost')_
     * `port`: _Integer_ _(Default: 9742)_ A port value of zero will assign a random port.
 
-Creates a new TCP transport.
+Creates a new TCP transport. The `host` and `port` specified in the `options` will be the ones advertised to other peers to connect to. They must be reachable from the "outside".
+
+If "internal" `host` and `port` are different from the "outside" ones, specify the "internal" version in `options` when calling [transport.listen(\[options\], \[callback\])](#tcptransportlistenoptions-callback-1)
 
 ### tcpTransport.close([callback])
 
