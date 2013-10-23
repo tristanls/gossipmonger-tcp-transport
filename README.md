@@ -6,6 +6,10 @@ _Stability: 1 - [Experimental](https://github.com/tristanls/stability-index#stab
 
 TCP Transport for [Gossipmonger](https://github.com/tristanls/gossipmonger) (an implementation of the Scuttlebutt gossip protocol endpoint for real-time peer-to-peer replication).
 
+## Contributors
+
+[@tristanls](https://github.com/tristanls), [@KenanSulayman](https://github.com/KenanSulayman)
+
 ## Usage
 
 ```javascript
