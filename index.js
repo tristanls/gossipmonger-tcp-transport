@@ -38,6 +38,10 @@ var events = require('events'),
   * `options`: _Object_
     * `host`: _String_ _(Default: `localhost`)_ Hostname or IP.
     * `port`: _Integer_ _(Default: 9742)_ Port number.
+    * `useAdvertisedTransport`: _Boolean_ _(Default: false)_ If `false`, the
+            remote peer transport data will be derived from the TCP connection 
+            remoteAddress and remotePort. If `true`, whatever the remote peer 
+            advertises as transport data will be used.
 */
 var TcpTransport = module.exports = function TcpTransport (options) {
     var self = this;
@@ -47,6 +51,7 @@ var TcpTransport = module.exports = function TcpTransport (options) {
 
     self.host = options.host || 'localhost';
     self.port = options.port || 9742;
+    self.useAdvertisedTransport = options.useAdvertisedTransport || false;
 
     self.server = null;
 };
@@ -141,7 +146,7 @@ TcpTransport.prototype.listen = function listen (callback) {
             } catch (exception) {
                 // ignore
             }
-            if (data.sender) {
+            if (data.sender && !self.useAdvertisedTransport) {
                 // bind sender data to the actual address that is reachable
                 // from this peer
                 data.sender.transport = data.sender.transport || {};

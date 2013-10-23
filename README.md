@@ -63,6 +63,7 @@ Creates new TCP transport and starts the server.
   * `options`:
     * `host`: _String_ _(Default: 'localhost')_
     * `port`: _Integer_ _(Default: 9742)_ A port value of zero will assign a random port.
+    * `useAdvertisedTransport`: _Boolean_ _(Default: false)_ If `false`, the remote peer transport data will be derived from the TCP connection remoteAddress and remotePort. If `true`, whatever the remote peer advertises as transport data will be used.    
 
 Creates a new TCP transport.
 
