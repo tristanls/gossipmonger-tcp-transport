@@ -73,12 +73,16 @@ test['listening transport emits `deltas` event when it receives deltas'] = funct
     var localPeer = {id: "local", transport: {host: 'localhost', port: 9742}};
     var remotePeer = {id: "remote", transport: {host: '127.0.0.1', port: 11111}};
     var tcpTransport = new TcpTransport();
+    var clientLocalAddress;
+    var clientLocalPort;
     tcpTransport.listen(function () {
         var client = net.connect({host: 'localhost', port: 9742}, function () {
             var rpc = {
                 deltas: [["remote", "foo", "bar", 3]],
                 sender: remotePeer
             };
+            clientLocalAddress = client.localAddress;
+            clientLocalPort = client.localPort;
             client.end(JSON.stringify(rpc) + '\r\n'); // deltas rpc
         });
         client.on('error', function (error) {
@@ -86,6 +90,8 @@ test['listening transport emits `deltas` event when it receives deltas'] = funct
         });
     });
     tcpTransport.on('deltas', function (rPeer, deltas) {
+        remotePeer.transport.host = clientLocalAddress;
+        remotePeer.transport.port = clientLocalPort;
         test.deepEqual(rPeer, remotePeer);
         test.deepEqual(deltas, [["remote", "foo", "bar", 3]]);
         tcpTransport.close(function () {
@@ -104,12 +110,16 @@ test['listening transport emits `digest` event when it receives digest'] = funct
         transport: {host: '127.0.0.1', port: 12222}
     };
     var tcpTransport = new TcpTransport();
+    var clientLocalAddress;
+    var clientLocalPort;
     tcpTransport.listen(function () {
         var client = net.connect({host: 'localhost', port: 9742}, function () {
             var rpc = {
                 digest: [digestPeer],
                 sender: remotePeer
             };
+            clientLocalAddress = client.localAddress;
+            clientLocalPort = client.localPort;            
             client.end(JSON.stringify(rpc) + '\r\n'); // digest rpc
         });
         client.on('error', function (error) {
@@ -117,6 +127,8 @@ test['listening transport emits `digest` event when it receives digest'] = funct
         });
     });
     tcpTransport.on('digest', function (rPeer, digest) {
+        remotePeer.transport.host = clientLocalAddress;
+        remotePeer.transport.port = clientLocalPort;
         test.deepEqual(rPeer, remotePeer);
         test.deepEqual(digest, [digestPeer]);
         tcpTransport.close(function () {

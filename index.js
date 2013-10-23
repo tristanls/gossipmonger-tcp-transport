@@ -129,6 +129,8 @@ TcpTransport.prototype.digest = function digest (remotePeer, localPeer, digestTo
 TcpTransport.prototype.listen = function listen (callback) {
     var self = this;
     self.server = net.createServer(function (connection) {
+        var remoteAddress = connection.remoteAddress;
+        var remotePort = connection.remotePort;
         var data = "";
         connection.on('data', function (chunk) {
             data += chunk.toString("utf8");
@@ -138,6 +140,13 @@ TcpTransport.prototype.listen = function listen (callback) {
                 data = JSON.parse(data.toString("utf8"));
             } catch (exception) {
                 // ignore
+            }
+            if (data.sender) {
+                // bind sender data to the actual address that is reachable
+                // from this peer
+                data.sender.transport = data.sender.transport || {};
+                data.sender.transport.host = remoteAddress;
+                data.sender.transport.port = remotePort;
             }
             if (data.deltas) {
                 self.emit('deltas', data.sender, data.deltas);
