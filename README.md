@@ -24,6 +24,8 @@ transport.on('error', function (error) {
     // process the error
     // if error handler is not registered if an error occurs it will be thrown
 });
+
+transport.listen();
 ```
 
 ## Tests
@@ -45,7 +47,7 @@ TCP Transport for [Gossipmonger](https://github.com/tristanls/node-gossipmonger)
   * [tcpTransport.close(\[callback\])](#tcptransportclosecallback)
   * [tcpTransport.deltas(remotePeer, localPeer, deltasToSend)](#tcptransportdeltasremotepeer-localpeer-deltastosend)
   * [tcpTransport.digest(remotePeer, localPeer, digestToSend)](#tcptransportdigestremotepeer-localpeer-digesttosend)
-  * [tcpTransport.listen(\[options\],\[callback\])](#tcptransportlistenoptions-callback)
+  * [tcpTransport.listen(\[options\],\[callback\])](#tcptransportlistenoptions-callback-1)
   * [Event 'deltas'](#event-deltas)
   * [Event 'digest'](#event-digest)
   * [Event 'error'](#event-error)
