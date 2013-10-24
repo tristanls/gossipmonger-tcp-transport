@@ -6,9 +6,6 @@
     "test": "node scripts/test.js"
   },
   "main": "index.js",
-  "dependencies": {
-    "clone": "0.1.9"
-  },
   "devDependencies": {
     "nodeunit": "0.8.1"
   },
