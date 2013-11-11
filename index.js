@@ -124,7 +124,7 @@ TcpTransport.prototype.digest = function digest (remotePeer, localPeer, digestTo
 };
 
 /*
-  * `options`: _Object_
+  * `options`: _Object_ _(Default: {})_
     * `host`: _String_ _(Default: as specified on construction)_ Hostname or IP
             to listen on.
     * `port`: _Integer_ _(Default: as specified on construction)_ Port number
@@ -136,11 +136,11 @@ TcpTransport.prototype.listen = function listen (options, callback) {
     var self = this;
 
     // options are optional
+    options = options || {};
+
     if (typeof options === 'function') {
         callback = options;
         options = {};
-    } else {
-        options = options || {};
     }
 
     self.server = net.createServer(function (connection) {
