@@ -139,6 +139,8 @@ TcpTransport.prototype.listen = function listen (options, callback) {
     if (typeof options === 'function') {
         callback = options;
         options = {};
+    } else {
+        options = options || {};
     }
 
     self.server = net.createServer(function (connection) {
@@ -164,6 +166,9 @@ TcpTransport.prototype.listen = function listen (options, callback) {
     });
     self.server.on('error', function (error) {
         self.emit('error', error);
+    });
+    self.server.on('listening', function () {
+        self.emit('listening');
     });
 
     // allow for options to override host and port we are listening on if it

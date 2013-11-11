@@ -84,6 +84,23 @@ test['listen() starts a TCP server on host:port from listen call options if spec
     });
 };
 
+test['listen() can start without args'] = function (test) {
+    test.expect(1);
+    var tcpTransport = new TcpTransport();
+    tcpTransport.listen();
+    tcpTransport.on('listening', function () {
+        var client = net.connect({host: 'localhost', port: 9742}, function () {
+            test.ok(true); // assert connection
+            tcpTransport.close(function () {
+                test.done();
+            });
+            client.on('error', function () {
+                // catch test connection cut
+            });
+        });
+    });
+};
+
 test['listening transport emits `deltas` event when it receives deltas'] = function (test) {
     test.expect(2);
     var localPeer = {id: "local", transport: {host: 'localhost', port: 9742}};
