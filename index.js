@@ -35,7 +35,7 @@ var events = require('events'),
     util = require('util');
 
 /*
-  * `options`: _Object_
+  * `options`: _Object_ _(Default: {})_
     * `host`: _String_ _(Default: `localhost`)_ Hostname or IP.
     * `port`: _Integer_ _(Default: 9742)_ Port number.
 */

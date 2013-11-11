@@ -8,7 +8,7 @@ TCP Transport for [Gossipmonger](https://github.com/tristanls/gossipmonger) (an 
 
 ## Contributors
 
-[@tristanls](https://github.com/tristanls), [@KenanSulayman](https://github.com/KenanSulayman)
+[@tristanls](https://github.com/tristanls), [@KenanSulayman](https://github.com/KenanSulayman), [@yuskesh](https://github.com/yuskesh)
 
 ## Usage
 
@@ -29,6 +29,10 @@ transport.on('error', function (error) {
     // if error handler is not registered if an error occurs it will be thrown
 });
 
+transport.on('listening', function () {
+    console.log('listening...'); 
+});
+
 transport.listen();
 ```
 
@@ -46,8 +50,8 @@ TCP Transport for [Gossipmonger](https://github.com/tristanls/node-gossipmonger)
 
 **Public API**
 
-  * [TcpTransport.listen(options, \[callback\])](#tcptransportlistenoptions-callback)
-  * [new TcpTransport(options)](#new-tcptransportoptions)
+  * [TcpTransport.listen(\[options\], \[callback\])](#tcptransportlistenoptions-callback)
+  * [new TcpTransport(\[options\])](#new-tcptransportoptions)
   * [tcpTransport.close(\[callback\])](#tcptransportclosecallback)
   * [tcpTransport.deltas(remotePeer, localPeer, deltasToSend)](#tcptransportdeltasremotepeer-localpeer-deltastosend)
   * [tcpTransport.digest(remotePeer, localPeer, digestToSend)](#tcptransportdigestremotepeer-localpeer-digesttosend)
@@ -55,8 +59,9 @@ TCP Transport for [Gossipmonger](https://github.com/tristanls/node-gossipmonger)
   * [Event 'deltas'](#event-deltas)
   * [Event 'digest'](#event-digest)
   * [Event 'error'](#event-error)
+  * [Event 'listening'](#event-listening)
 
-### TcpTransport.listen(options, [callback])
+### TcpTransport.listen([options], [callback])
 
   * `options`: See `new TcpTransport(options)` `options`.
   * `callback`: See `tcpTransport.listen(callback)` `callback`.
@@ -64,9 +69,9 @@ TCP Transport for [Gossipmonger](https://github.com/tristanls/node-gossipmonger)
 
 Creates new TCP transport and starts the server.
 
-### new TcpTransport(options)
+### new TcpTransport([options])
 
-  * `options`: _Object_
+  * `options`: _Object_ _(Default: {})_
     * `host`: _String_ _(Default: 'localhost')_
     * `port`: _Integer_ _(Default: 9742)_ A port value of zero will assign a random port.
 
@@ -112,7 +117,7 @@ Sends `digestToSend` to the `remotePeer`.
 
 ### tcpTransport.listen([options], [callback])
 
-  * `options`: _Object_
+  * `options`: _Object_ _(Default: {})_
     * `host`: _String_ _(Default: as specified on construction)_ Hostname or IP to listen on.
     * `port`: _Integer_ _(Default: as specified on construction)_ Port number to listen on.
   * `callback`: _Function_ _(Default: undefined)_ `function () {}` Optional callback to call once the server is up.
@@ -157,3 +162,9 @@ Emitted when TcpTransport receives `digest` from a peer.
     * `error`: _Object_ An error that occurred.
 
 Emitted when TcpTransport encounters an error. If no handler is registered, an exception will be thrown.
+
+### Event `listening`
+
+  * `function () {}`
+
+Emitted when TcpTransport starts listening for connections from peers.
